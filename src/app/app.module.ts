@@ -3,7 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { MaterialModule, MdToolbarModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { AppComponent } from './app.component';
+import { ZillowService } from './zillow.service';
+import 'hammerjs';
 
 @NgModule({
   declarations: [
@@ -12,9 +17,10 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     FormsModule,
+    FlexLayoutModule,
     HttpModule
   ],
-  providers: [],
+  providers: [ZillowService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
