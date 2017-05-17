@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { MaterialModule, MdToolbarModule } from '@angular/material';
+import { MaterialModule, MdToolbarModule, MdCardModule, MdListModule, MdIconModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
@@ -18,7 +18,11 @@ import 'hammerjs';
     BrowserModule,
     FormsModule,
     FlexLayoutModule,
-    HttpModule
+    HttpModule,
+    MdCardModule,
+    MdToolbarModule,
+    MdListModule,
+    MdIconModule
   ],
   providers: [ZillowService],
   bootstrap: [AppComponent]

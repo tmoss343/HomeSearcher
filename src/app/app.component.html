@@ -1,12 +1,24 @@
 <div tabindex="0">
   <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around center">
 
+This is a test
+<md-card class="card-size" fxLayout="column" tabindex="0">
+  <md-card-title>Title</md-card-title>
+  <md-card-subtitle>Subtitle</md-card-subtitle>
+  <md-card-content>
+    <md-list>
+      <md-list-item><md-icon class="property-title-icon">id</md-icon>Region</md-list-item>
+    </md-list>
+  </md-card-content>
+</md-card>
+
+
     <md-card class="card-size" fxLayout="column" *ngFor="let region of regionResponse.regions" tabindex="0">
       <md-card-title>{{region.name}}</md-card-title>
       <md-card-subtitle>{{region.url}}</md-card-subtitle>
       <md-card-content>
         <md-list>
-          <md-list-item><md-icon class="property-title-icon md-dark md-inactive">id</md-icon>{{region.id}}</md-list-item>
+          <md-list-item><md-icon class="property-title-icon">id</md-icon>{{region.id}}</md-list-item>
         </md-list>
       </md-card-content>
     </md-card>

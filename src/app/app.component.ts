@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ZillowService, ResponseRegion } from './zillow.service';
-import { MaterialModule, MdToolbarModule } from '@angular/material';
+import { MaterialModule, MdToolbarModule, MdCardModule, MdListModule, MdIconModule } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { MaterialModule, MdToolbarModule } from '@angular/material';
 })
 export class AppComponent {
   title = 'app works!';
-  public regionResponse: ResponseRegion;
+  public regionResponse: ResponseRegion = new ResponseRegion();
   private errorMessage: string;
 
   constructor(public zillowService: ZillowService) {}
