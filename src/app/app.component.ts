@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ZillowService, ResponseRegion } from './zillow.service';
+import { ZillowService, NeighborhoodRegion } from './zillow.service';
 import { MaterialModule, MdToolbarModule, MdCardModule, MdListModule, MdIconModule } from '@angular/material';
 
 @Component({
@@ -9,15 +9,17 @@ import { MaterialModule, MdToolbarModule, MdCardModule, MdListModule, MdIconModu
 })
 export class AppComponent {
   title = 'app works!';
-  public regionResponse: ResponseRegion = new ResponseRegion();
+  public regionResponse: NeighborhoodRegion[] = new Array<NeighborhoodRegion>();
   private errorMessage: string;
 
-  constructor(public zillowService: ZillowService) {}
+  constructor(public zillowService: ZillowService) {
+    this.getNeighborhood();
+  }
 
   private getNeighborhood() {
     this.zillowService.getHomeData()
         .subscribe(
-          regions => this.regionResponse = regions as ResponseRegion,
+          regions => this.regionResponse = regions as NeighborhoodRegion[],
           error => this.errorMessage = <any>error
         );
   }

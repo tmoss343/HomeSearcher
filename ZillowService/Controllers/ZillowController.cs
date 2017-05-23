@@ -4,10 +4,11 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Linq;
-using System.Xml.XPath;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft;
 
 namespace ZillowService.Controllers
 {
@@ -16,7 +17,7 @@ namespace ZillowService.Controllers
     {
         private HttpClient httpClient;
 
-        XPathDocument zillowResult;
+        XDocument zillowResult;
 
         public ZillowController()
         {
@@ -25,8 +26,9 @@ namespace ZillowService.Controllers
         }
         // GET api/values
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<ActionResult> Get()
         {
+            IEnumerable<Region> result;
             using (httpClient)
             {
                 try
@@ -35,15 +37,16 @@ namespace ZillowService.Controllers
                       await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&state=mo&city=kansascity&childtype=neighborhood"));
                     
                     var responseString = await response.Content.ReadAsStringAsync();
-                    
-                    XmlSerializer serializer = new XmlSerializer(typeof(RootObject));
-                    using (TextReader reader = new StringReader(responseString))
-                    {
-                      zillowResult = new XPathDocument(reader);
-                    }
-
-                    var nav = zillowResult.CreateNavigator();
-                    var result = nav.Evaluate("RegionChildren");
+                    zillowResult = XDocument.Parse(responseString);
+                    result = from c in zillowResult.Descendants("region")
+                                                 select new Region()
+                                                 {
+                                                   id = (string)c.Element("id"),
+                                                   latitude = (string)c.Element("latitude"),
+                                                   longitude = (string)c.Element("longitude"),
+                                                   name = (string)c.Element("name"),
+                                                   url = (string)c.Element("url")
+                                                 };
                 }
                 catch (Exception e)
                 {
@@ -51,7 +54,7 @@ namespace ZillowService.Controllers
                 }
                 
             }
-            return new string[] { "value1", "value2" };
+            return this.Ok(result.ToList<Region>());
         }
 
         // GET api/values/5
