@@ -36,7 +36,7 @@ namespace ZillowService.Controllers
                 try
                 {
                     var response =
-                      await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&state=mo&city=kansascity&childtype=neighborhood"));
+                      await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&regionId=18795&childtype=neighborhood"));
                     
                     var responseString = await response.Content.ReadAsStringAsync();
                     zillowResult = XDocument.Parse(responseString);
@@ -59,29 +59,25 @@ namespace ZillowService.Controllers
             return this.Ok(result.ToList<Region>());
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("getcomps")]
+        public async Task<ActionResult> GetComps()
         {
-            return "value";
-        }
+          var response =
+            await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetDeepComps.htm?zws-id=X1-ZWz197buben8jv_2ghte&zpid=58612516&count=5"));
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+          var responseString = await response.Content.ReadAsStringAsync();
+          zillowResult = XDocument.Parse(responseString);
+          // todo not the right comps object... yet
+          var result = from c in zillowResult.Descendants("comp")
+                    select new 
+                    {
+                      id = (string)c.Element("zpid"),
+                      latitude = (string)c.Element("latitude"),
+                      longitude = (string)c.Element("longitude"),
+                      name = (string)c.Element("name"),
+                      url = (string)c.Element("homedetails")
+                    };
+          return this.Ok(result.ToList());
         }
     }
 }
