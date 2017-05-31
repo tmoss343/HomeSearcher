@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise'
@@ -18,16 +18,15 @@ export class ZillowService {
 
   private headers = new Headers(
   {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Content-Type': 'application/json'
   });
 
   constructor(private http: Http) { }
 
   getHomeData():  Observable<any[]> {
     return this.http
-             .get(`http://localhost:57961/api/zillow`)
-             .map(response => response.json())
+             .get(`http://localhost:57961/api/zillow`, new RequestOptions({headers: this.headers}))
+             .map((response: Response) => response.json())
              .catch(this.handleError);
   }
 

@@ -8,10 +8,12 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using Newtonsoft;
 
 namespace ZillowService.Controllers
 {
+    [EnableCors("AllowSpecificOrigin")]
     [Route("api/[controller]")]
     public class ZillowController : Controller
     {

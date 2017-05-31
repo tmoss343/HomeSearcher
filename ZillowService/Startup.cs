@@ -29,6 +29,14 @@ namespace ZillowService
         {
             // Add framework services.
             services.AddMvc();
+            services.AddCors(options =>
+            {
+              options.AddPolicy("AllowSpecificOrigin",
+                  builder => builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,8 +44,7 @@ namespace ZillowService
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseCors(builder =>
-             builder.WithOrigins("http://localhost:4200"));
+            app.UseCors("AllowSpecificOrigin");
             app.UseMvc();
         }
     }
