@@ -3,9 +3,9 @@ var json2csv = require('json2csv');
 var Client = require('node-rest-client').Client;
 var client = new Client();
 
-var fields = ['id', 'latitude', 'longitude', 'name', 'url'];
+var fields = ['id', 'lastsoldprice', 'lastsolddate', 'finishedSqFt', 'bathrooms', 'bedrooms', 'zestimate', 'lastUpdated', 'address', 'url'];
 // direct way
-client.get("http://localhost:57961/api/zillow", function (json, response) {
+client.get("http://localhost:5000/api/houses/propertysearchresults", function (json, response) {
     // parsed response body as js object
     // console.log(data);
     // raw response

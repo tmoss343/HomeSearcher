@@ -1,19 +1,19 @@
-# zillowconsumer
+# Houseconsumer
 
-Consumes the zillow api
+Consumes the House api
 
-[![build status](https://secure.travis-ci.org/tmoss343/zillowconsumer.png)](http://travis-ci.org/tmoss343/zillowconsumer)
+[![build status](https://secure.travis-ci.org/tmoss343/Houseconsumer.png)](http://travis-ci.org/tmoss343/Houseconsumer)
 
 ## Installation
 
 This module is installed via npm:
 
 ``` bash
-$ npm install zillowconsumer
+$ npm install Houseconsumer
 ```
 
 ## Example Usage
 
 ``` js
-var ZillowConsumer = require('zillowconsumer');
+var HouseConsumer = require('Houseconsumer');
 ```

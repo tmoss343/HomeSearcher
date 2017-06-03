@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/ZillowService.csproj"
+                "${workspaceRoot}/HouseService.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

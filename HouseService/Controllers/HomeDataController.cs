@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft;
 
-namespace ZillowService.Controllers
+namespace HouseService.Controllers
 {
-    public class ZillowHomeDetails
+    public class HouseHomeDetails
     {
       public string id { get; set; }
       public string lastsoldprice { get; set; }
@@ -24,13 +24,13 @@ namespace ZillowService.Controllers
       public string bedrooms { get; set; }
       public string zestimate { get; set; }
       public string lastUpdated { get; set; }
-      public string name { get; set; }
+      public string address { get; set; }
       public string url { get; set; }
     }
 
     [EnableCors("AllowSpecificOrigin")]
-    [Route("api/[controller]")]
-    public class ZillowController : Controller
+    [Route("houses")]
+    public class HouseController : Controller
     {
         private HttpClient httpClient;
 
@@ -43,15 +43,15 @@ namespace ZillowService.Controllers
           "Union%20Hill"
         };
 
-        XDocument zillowResult;
+        XDocument HouseResult;
 
-        public ZillowController()
+        public HouseController()
         {
             this.httpClient = new HttpClient();
-            this.httpClient.BaseAddress = new Uri("http://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&state=mo&city=kansascity&childtype=neighborhood");
+            this.httpClient.BaseAddress = new Uri("http://www.House.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&state=mo&city=kansascity&childtype=neighborhood");
         }
         // GET api/values
-        [HttpGet]
+        [HttpGet("kcregions")]
         public async Task<ActionResult> Get()
         {
             IEnumerable<Region> result;
@@ -60,11 +60,11 @@ namespace ZillowService.Controllers
                 try
                 {
                     var response =
-                      await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&regionId=18795&childtype=neighborhood"));
+                      await this.httpClient.GetAsync(new Uri("http://www.House.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&regionId=18795&childtype=neighborhood"));
                     
                     var responseString = await response.Content.ReadAsStringAsync();
-                    zillowResult = XDocument.Parse(responseString);
-                    result = from c in zillowResult.Descendants("region")
+                    HouseResult = XDocument.Parse(responseString);
+                    result = from c in HouseResult.Descendants("region")
                                                  select new Region()
                                                  {
                                                    id = (string)c.Element("id"),
@@ -88,12 +88,12 @@ namespace ZillowService.Controllers
         {
           
       var response =
-            await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetDeepComps.htm?zws-id=X1-ZWz197buben8jv_2ghte&zpid=58612516&count=5"));
+            await this.httpClient.GetAsync(new Uri("http://www.House.com/webservice/GetDeepComps.htm?zws-id=X1-ZWz197buben8jv_2ghte&zpid=58612516&count=5"));
 
           var responseString = await response.Content.ReadAsStringAsync();
-          zillowResult = XDocument.Parse(responseString);
+          HouseResult = XDocument.Parse(responseString);
           // todo not the right comps object... yet
-          var result = from c in zillowResult.Descendants("comp")
+          var result = from c in HouseResult.Descendants("comp")
                     select new 
                     {
                       id = (string)c.Element("zpid"),
@@ -108,7 +108,7 @@ namespace ZillowService.Controllers
         [HttpGet("propertysearchresults")]
         public async Task<ActionResult> GetSearchResults()
         {
-          List<ZillowHomeDetails> houseInfo = new List<ZillowHomeDetails>();
+          List<HouseHomeDetails> houseInfo = new List<HouseHomeDetails>();
           foreach (var hood in Neighborhoods)
           {
 
@@ -122,14 +122,24 @@ namespace ZillowService.Controllers
             
             foreach (var house in goodHouses)
             {
+              house.street_address = house.street_address.Replace("ST", "");
+              house.street_address = house.street_address.Replace("TER", "");
+              house.street_address = house.street_address.Replace("AVE", "");
+              house.street_address = house.street_address.Replace("BLVD", "");
+              house.street_address = house.street_address.Replace("CR", "");
+              house.street_address = house.street_address.Replace("LN", "");
+              house.street_address = house.street_address.Replace("PL", "");
+              house.street_address = house.street_address.Replace("PLZ", "");
+              house.street_address = house.street_address.Replace("RD", "");
+              house.street_address = house.street_address.Replace("HWY", "");
               var response =
-                await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetDeepSearchResults.htm?zws-id=X1-ZWz197buben8jv_2ghte&address=" + house.street_address.Replace(" ", "") + "&citystatezip=" + house.city.Replace(" ", "") + "%2C+" + house.state));
+                await this.httpClient.GetAsync(new Uri("http://www.House.com/webservice/GetDeepSearchResults.htm?zws-id=X1-ZWz197buben8jv_2ghte&address=" + house.street_address.Replace(" ", "") + "&citystatezip=" + house.city.Replace(" ", "") + "%2C+" + house.state));
 
               var responseString = await response.Content.ReadAsStringAsync();
-              zillowResult = XDocument.Parse(responseString);
+              HouseResult = XDocument.Parse(responseString);
               // todo not the right comps object... yet
-              var results = from c in zillowResult.Descendants("result")
-                            select new ZillowHomeDetails
+              var results = from c in HouseResult.Descendants("result")
+                            select new HouseHomeDetails
                             {
                               id = (string)c.Element("zpid"),
                               lastsoldprice = (string)c.Element("lastSoldPrice"),
@@ -139,7 +149,7 @@ namespace ZillowService.Controllers
                               bedrooms = (string)c.Element("bedrooms"),
                               zestimate = (string)c.Element("zestimate").Element("amount"),
                               lastUpdated = (string)c.Element("zestimate").Element("last-updated"),
-                              name = ((string)c.Element("address").Element("street")) + " " + ((string)c.Element("address").Element("zipcode")),
+                              address = ((string)c.Element("address").Element("street")) + " " + ((string)c.Element("address").Element("zipcode")),
                               url = (string)c.Element("links").Element("homedetails")
                             };
               foreach (var result in results)

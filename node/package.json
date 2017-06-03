@@ -1,14 +1,14 @@
 {
-  "name": "zillowconsumer",
+  "name": "Houseconsumer",
   "version": "1.0.0",
-  "description": "Consumes the zillow api",
+  "description": "Consumes the House api",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/grunt ci"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tmoss343/zillowconsumer"
+    "url": "https://github.com/tmoss343/Houseconsumer"
   },
   "bin": {
       "" : "bin/cli"
@@ -17,7 +17,7 @@
   "author": "Thomas <thomas.bauers@engagedtechnologies.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tmoss343/zillowconsumer/issues"
+    "url": "https://github.com/tmoss343/Houseconsumer/issues"
   },
   "dependencies": {
     "node-rest-client": "3.1.0",

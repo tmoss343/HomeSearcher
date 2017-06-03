@@ -1,9 +1,9 @@
 var expect = require('chai').expect
-var ZillowConsumer = require('..')
+var HouseConsumer = require('..')
 
-describe('zillowconsumer', function() {
+describe('Houseconsumer', function() {
   it('should say hello', function(done) {
-    expect(ZillowConsumer()).to.equal('Hello, world');
+    expect(HouseConsumer()).to.equal('Hello, world');
     done();
   });
 });
