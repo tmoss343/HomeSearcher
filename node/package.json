@@ -14,14 +14,16 @@
       "" : "bin/cli"
      },
   "keywords": [] ,
-  "author": "Thomas <thomas.bauers@engagedtechnologies.com>",
+  "author": "Thomas <tmoss343@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/tmoss343/Houseconsumer/issues"
   },
   "dependencies": {
     "node-rest-client": "3.1.0",
-    "json2csv": "3.7.3"
+    "json2csv": "3.7.3", 
+    "googleapis": "^19.0.0",
+    "google-auth-library": "^0.10.0"
   },
   "devDependencies": {
     "chai": "~1.10.0",
