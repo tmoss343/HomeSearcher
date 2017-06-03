@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Linq;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Cors;
-using Newtonsoft;
-
-namespace HouseService.Controllers
+﻿namespace HouseService.Controllers
 {
-    public class HouseHomeDetails
-    {
-      public string id { get; set; }
-      public string lastsoldprice { get; set; }
-      public string lastsolddate { get; set; }
-      public string lotSizeSqFt { get; set; }
-      public string finishedSqFt { get; set; }
-      public string bathrooms { get; set; }
-      public string bedrooms { get; set; }
-      public string zestimate { get; set; }
-      public string lastUpdated { get; set; }
-      public string address { get; set; }
-      public string url { get; set; }
-    }
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Linq;
+    using System.Xml.Linq;
+    using System.Xml.Serialization;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Cors;
+    using Newtonsoft;
+    using HouseService.Models;
 
     [EnableCors("AllowSpecificOrigin")]
     [Route("houses")]
@@ -160,5 +146,16 @@ namespace HouseService.Controllers
           }
           return this.Ok(houseInfo.ToList());
         } 
+
+        [HttpGet("landbankhouses")]
+        public async Task<ActionResult> GetFromTheLandBank()
+        {
+          var addressResult = await this.httpClient.GetAsync(new Uri("https://data.kcmo.org/resource/n653-v74j.json"));
+          var addresses = await addressResult.Content.ReadAsStringAsync();
+
+          var addressResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<LandBankHome>(addresses);
+
+          return this.Ok(addressResponse);
+        }
     }
 }
