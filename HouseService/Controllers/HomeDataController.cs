@@ -48,7 +48,7 @@ namespace HouseService.Controllers
         public HouseController()
         {
             this.httpClient = new HttpClient();
-            this.httpClient.BaseAddress = new Uri("http://www.House.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&state=mo&city=kansascity&childtype=neighborhood");
+            this.httpClient.BaseAddress = new Uri("http://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&state=mo&city=kansascity&childtype=neighborhood");
         }
         // GET api/values
         [HttpGet("kcregions")]
@@ -60,7 +60,7 @@ namespace HouseService.Controllers
                 try
                 {
                     var response =
-                      await this.httpClient.GetAsync(new Uri("http://www.House.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&regionId=18795&childtype=neighborhood"));
+                      await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetRegionChildren.htm?zws-id=X1-ZWz197buben8jv_2ghte&regionId=18795&childtype=neighborhood"));
                     
                     var responseString = await response.Content.ReadAsStringAsync();
                     HouseResult = XDocument.Parse(responseString);
@@ -88,7 +88,7 @@ namespace HouseService.Controllers
         {
           
       var response =
-            await this.httpClient.GetAsync(new Uri("http://www.House.com/webservice/GetDeepComps.htm?zws-id=X1-ZWz197buben8jv_2ghte&zpid=58612516&count=5"));
+            await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetDeepComps.htm?zws-id=X1-ZWz197buben8jv_2ghte&zpid=58612516&count=5"));
 
           var responseString = await response.Content.ReadAsStringAsync();
           HouseResult = XDocument.Parse(responseString);
@@ -133,7 +133,7 @@ namespace HouseService.Controllers
               house.street_address = house.street_address.Replace("RD", "");
               house.street_address = house.street_address.Replace("HWY", "");
               var response =
-                await this.httpClient.GetAsync(new Uri("http://www.House.com/webservice/GetDeepSearchResults.htm?zws-id=X1-ZWz197buben8jv_2ghte&address=" + house.street_address.Replace(" ", "") + "&citystatezip=" + house.city.Replace(" ", "") + "%2C+" + house.state));
+                await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetDeepSearchResults.htm?zws-id=X1-ZWz197buben8jv_2ghte&address=" + house.street_address.Replace(" ", "") + "&citystatezip=" + house.city.Replace(" ", "") + "%2C+" + house.state));
 
               var responseString = await response.Content.ReadAsStringAsync();
               HouseResult = XDocument.Parse(responseString);
