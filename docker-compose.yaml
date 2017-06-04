@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  
+  housescooperapi:
+    image: tbauers/housescooperapi
+    ports:
+      - "5000:5000"
+
+  product-launch-web:
+    image: tbauers/housedatapusherman
+    ports:
+      - "80:80"
+    depends_on:
+      - housescooperapi
+
+networks:
+  app-net:
+    external: 
+     name: bridge

@@ -4,6 +4,7 @@
   "description": "Consumes the House api",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "node_modules/.bin/grunt ci"
   },
   "repository": {
