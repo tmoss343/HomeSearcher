@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ZillowService, NeighborhoodRegion } from './zillow.service';
 import { MaterialModule, MdToolbarModule, MdCardModule, MdListModule, MdIconModule } from '@angular/material';
-import * as fs from 'fs';
-import * as jsonfile from 'jsonfile';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +14,8 @@ export class AppComponent {
 
   constructor(public zillowService: ZillowService) {
     this.getNeighborhood();
-
-    jsonfile.writeFile("/tmp/test.txt", function(err, obj) {
-      console.dir(obj)
-    });
   }
+
 
   private getNeighborhood() {
     this.zillowService.getHomeData()
