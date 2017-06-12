@@ -1,4 +1,5 @@
-namespace HouseService.Models {
+namespace HouseService.Models 
+{
     public class HouseHomeDetails
     {
       public string id { get; set; }

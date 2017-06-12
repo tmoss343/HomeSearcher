@@ -1,6 +1,7 @@
 ﻿namespace HouseService.Models
 {
     using System.Collections.Generic;
+    
     public class NeighborhoodResponse
     {
       public string code { get; set; }

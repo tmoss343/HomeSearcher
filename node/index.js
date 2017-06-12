@@ -25,28 +25,84 @@ fs.readFile('client_secret.json', function processClientSecrets(err, content) {
   //console.log(content.toString('ascii'));
   // Authorize a client with the loaded credentials, then call the
   // Drive API.
-  authorize(JSON.parse(content), createSpreadSheet);
+  authorize(JSON.parse(content), createZillowDataSpreadSheet);
 });
-// var API_KEY = 'AIzaSyD3qhA2UcrLnA4wNsI62-tHzqLd_OinDdE';
-// createSpreadSheet("");
+fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+  if (err) {
+    console.log('Error loading client secret file: ' + err);
+    return;
+  }
+  //console.log(content.toString('ascii'));
+  // Authorize a client with the loaded credentials, then call the
+  // Drive API.
+  authorize(JSON.parse(content), createLandBankDataSpreadSheet);
+});
 
 /**
  * creates spreadsheet
  *
  * @param {google.auth.OAuth2} auth
  */
-function createSpreadSheet(auth) {
+function createLandBankDataSpreadSheet(auth) {
 
   var drive = google.drive('v3');
-  var fields = ['id', 'lastsoldprice', 'lastsolddate', 'finishedSqFt', 'bathrooms', 'bedrooms', 'zestimate', 'lastUpdated', 'address', 'url'];
+  var fields = ['acquisition_date', 'address', 'city', 'city_council_district', 'inventory_type', 'location_1_address', 'location_1_city', 'location_1_state', 'postal_code', 'market_value', 'market_value_year', 'neighborhood', 'off_stree_parking', 'property_class', 'property_condition', 'propert_status', 'school_district', 'square_footage', 'zoned_as'];
   // direct way
-  client.get("http://housescooperapi:5000/houses/propertysearchresults", function (json, response) {
+  client.get("http://localhost:5000/houses/landbankhouses", function (json, response) {
       // parsed response body as js object
       // console.log(data);
       // raw response
       // console.log(response);
       var result = json2csv({ data: json, fields: fields });
-      fs.writeFile("data.csv", result/*JSON.stringify(data)*/, function(err) {
+      fs.writeFile("data.csv", result, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        console.log("The data was saved!");
+      });
+      
+      var media = {
+        mimeType: 'text/csv',
+        body: fs.createReadStream('data.csv')
+      };
+      
+      var fileMetadata = {
+        'name': 'LandBankDataDump' + date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear(),
+        'mimeType': 'application/vnd.google-apps.spreadsheet'
+      };
+      drive.files.create({
+        auth: auth,
+        resource: fileMetadata,
+        media: media,
+        fields: 'id'
+      }, function(err, file) {
+        if(err) {
+          // Handle error
+          console.log(err);
+        } else {
+          console.log('File Id:' , file.id);
+        }
+      });
+  });
+}
+
+/**
+ * creates spreadsheet
+ *
+ * @param {google.auth.OAuth2} auth
+ */
+function createZillowDataSpreadSheet(auth) {
+
+  var drive = google.drive('v3');
+  var fields = ['id', 'lastsoldprice', 'lastsolddate', 'finishedSqFt', 'bathrooms', 'bedrooms', 'zestimate', 'lastUpdated', 'address', 'url'];
+  // direct way
+  client.get("http://localhost:5000/houses/propertysearchresults", function (json, response) {
+      // parsed response body as js object
+      // console.log(data);
+      // raw response
+      // console.log(response);
+      var result = json2csv({ data: json, fields: fields });
+      fs.writeFile("data.csv", result, function(err) {
         if(err) {
             return console.log(err);
         }

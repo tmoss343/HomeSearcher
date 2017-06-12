@@ -24,7 +24,8 @@
     "node-rest-client": "3.1.0",
     "json2csv": "3.7.3", 
     "googleapis": "^19.0.0",
-    "google-auth-library": "^0.10.0"
+    "google-auth-library": "^0.10.0",
+    "craigslist-json-search": "^0.0.2"
   },
   "devDependencies": {
     "chai": "~1.10.0",

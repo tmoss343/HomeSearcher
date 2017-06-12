@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -74,7 +75,7 @@
         {
           
       var response =
-            await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetDeepComps.htm?zws-id=X1-ZWz197buben8jv_2ghte&zpid=58612516&count=5"));
+            await this.httpClient.GetAsync(new Uri("http://www.zillow.com/webservice/GetDeepComps.htm?zws-id=X1-ZWz197buben8jv_2ghte&zpid=2338920&count=5"));
 
           var responseString = await response.Content.ReadAsStringAsync();
           HouseResult = XDocument.Parse(responseString);
@@ -153,9 +154,34 @@
           var addressResult = await this.httpClient.GetAsync(new Uri("https://data.kcmo.org/resource/n653-v74j.json"));
           var addresses = await addressResult.Content.ReadAsStringAsync();
 
-          var addressResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<LandBankHome>(addresses);
+          var addressResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<List<LandBankHome>>(addresses);
+          float outlong;
+          float outlat;
 
-          return this.Ok(addressResponse);
+          var whatIcareAbout = addressResponse.Where(address => ((float.TryParse(address.latitude, out outlat) && (float.Parse(address.latitude, CultureInfo.InvariantCulture.NumberFormat) >= 39.0229 || float.Parse(address.latitude, CultureInfo.InvariantCulture.NumberFormat) <= 39.0642)) &&
+                                                          (float.TryParse(address.longitude, out outlong) && (float.Parse(address.longitude, CultureInfo.InvariantCulture.NumberFormat) >= -94.3703 || float.Parse(address.longitude, CultureInfo.InvariantCulture.NumberFormat) <= -94.3358)))
+                                );
+          List<LandBankResult> result = new List<LandBankResult>();
+          foreach(var thing in whatIcareAbout)
+          {
+            result.Add(thing.ToResult());
+          }
+          return this.Ok(result);
+        }
+
+        [HttpGet("cityownedparcels")]
+        public async Task<ActionResult> GetFromCityParcels()
+        {
+          var addressResult = await this.httpClient.GetAsync(new Uri("https://data.kcmo.org/resource/nvpt-tmm9.json"));
+          var addresses = await addressResult.Content.ReadAsStringAsync();
+
+          var addressResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CityOwnedParcels>>(addresses);
+
+          return this.Ok(addressResponse.Where(address => ((float.Parse(address.property_latitude, CultureInfo.InvariantCulture.NumberFormat) >= 39.110 || float.Parse(address.property_latitude, CultureInfo.InvariantCulture.NumberFormat) <= 38.911) &&
+                                                           (float.Parse(address.property_longitude, CultureInfo.InvariantCulture.NumberFormat) >= -94.3628 || float.Parse(address.property_longitude, CultureInfo.InvariantCulture.NumberFormat) <= -94.3401) &&
+                                                           (address.land_use_code == "1111" || address.land_use_code == "1121" || address.land_use_code == "1122" || address.land_use_code == "1126" || address.land_use_code == "2300" || address.land_use_code == "1121" || address.land_use_code == "9500"))
+                                              )
+                        );
         }
     }
 }
