@@ -13,6 +13,29 @@ export class NeighborhoodRegion {
   longitude: string;
 }
 
+export class DeepComp {
+  id: number;
+  latitude: number;
+  longitude: number;
+  name: string;
+  url: string;
+  neighborhoodId: number;
+}
+
+export class HomeDetails {
+  id: string;
+  lastSoldPrice: string;
+  lastSoldDate: string;
+  finishedSqFt: string;
+  bathrooms: string;
+  bedrooms: string;
+  zestimate: string;
+  lastUpdated: string;
+  address: string;
+  url: string;
+  neighborhood: string;
+}
+
 @Injectable()
 export class ZillowService {
 
@@ -23,11 +46,25 @@ export class ZillowService {
 
   constructor(private http: Http) { }
 
-  getHomeData():  Observable<any[]> {
+  getNeighborhoodData():  Observable<any[]> {
     return this.http
-             .get(`http://localhost:5000/houses/kcregions`, new RequestOptions({headers: this.headers}))
-             .map((response: Response) => response.json())
-             .catch(this.handleError);
+     .get(`http://localhost:5000/houses/kcregions`, new RequestOptions({headers: this.headers}))
+     .map((response: Response) => response.json())
+     .catch(this.handleError);
+  }
+
+  getPropertyData():  Observable<any[]> {
+    return this.http
+      .get(`http://localhost:5000/houses/propertysearchresults`, new RequestOptions({headers: this.headers}))
+      .map((response: Response) => response.json())
+      .catch(this.handleError);
+  }
+
+  getCompsData(id: string):  Observable<any[]> {
+    return this.http
+      .get(`http://localhost:5000/houses/comps?id=` + id, new RequestOptions({headers: this.headers}))
+      .map((response: Response) => response.json())
+      .catch(this.handleError);
   }
 
   private handleError (error: any) {

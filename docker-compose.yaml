@@ -7,7 +7,7 @@ services:
     ports:
       - "5000:5000"
 
-  product-launch-web:
+  housedatapusherman:
     image: tbauers/housedatapusherman
     ports:
       - "80:80"

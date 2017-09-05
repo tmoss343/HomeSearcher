@@ -1,4 +1,4 @@
-namespace HouseService.Models 
+﻿namespace HouseService.Models 
 {
     public class HouseHomeDetails
     {
@@ -13,5 +13,6 @@ namespace HouseService.Models
       public string lastUpdated { get; set; }
       public string address { get; set; }
       public string url { get; set; }
+      public string neighborhood { get; set; }
     }
 }
