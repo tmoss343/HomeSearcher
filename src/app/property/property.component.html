@@ -1,0 +1,25 @@
+<div tabindex="0">
+    <!--<div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around center">-->
+        <!--<md-card class="card-size" fxLayout="column" *ngFor="let region of regionResponse" tabindex="0">-->
+        <!--<md-card-title>{{region.name}}</md-card-title>-->
+        <!--<md-card-subtitle>{{region.url}}</md-card-subtitle>-->
+        <!--<md-card-content>-->
+            <!--<md-list>-->
+            <!--<md-list-item><md-icon class="property-title-icon">id</md-icon>{{region.id}}</md-list-item>-->
+            <!--</md-list>-->
+        <!--</md-card-content>-->
+        <!--</md-card>-->
+    <!--</div>-->
+    
+    <md-grid-list cols="4" rowHeight="100px">
+        <div *ngFor="let prop of propResponse">
+            <a *ngIf="prop.neighborhood == id" href="{{prop.url}}">
+            <md-grid-tile [colspan]="2" [rowspan]="1">
+                    {{prop.address}}    
+            </md-grid-tile>
+            </a>
+        </div>
+    </md-grid-list>
+      
+</div>
+      

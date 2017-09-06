@@ -45,6 +45,9 @@
         [HttpGet("kcregions")]
         public async Task<ActionResult> Get()
         {
+          var cacheHoodsInfo = new List<Region>();
+          if (!this.memCache.TryGetValue("hoods", out cacheHoodsInfo))
+          {
             IEnumerable<Region> result;
             using (httpClient)
             {
@@ -69,9 +72,15 @@
                 {
                     throw;
                 }
-
+                // Set cache options.
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromDays(40));
+                memCache.Set("hoods", result.ToList(), cacheEntryOptions);
+                this.memCache.TryGetValue("hoods", out cacheHoodsInfo);
             }
-            return this.Ok(result.ToList<Region>());
+          }
+            return this.Ok(cacheHoodsInfo);
         }
 
         [HttpGet("comps")]
@@ -100,10 +109,10 @@
         [HttpGet("propertysearchresults")]
         public async Task<ActionResult> GetSearchResults()
         {
-          List<HouseHomeDetails> cacheHouseInfo = new List<HouseHomeDetails>();
+          var cacheHouseInfo = new List<HouseHomeDetails>();
           if (!this.memCache.TryGetValue("houses", out cacheHouseInfo))
           {
-            List<HouseHomeDetails> houseInfo = new List<HouseHomeDetails>();
+            var houseInfo = new List<HouseHomeDetails>();
             foreach (var hood in Neighborhoods)
             {
 
@@ -157,7 +166,7 @@
               // Set cache options.
               var cacheEntryOptions = new MemoryCacheEntryOptions()
                   // Keep in cache for this time, reset time if accessed.
-                  .SetSlidingExpiration(TimeSpan.FromDays(3));
+                  .SetSlidingExpiration(TimeSpan.FromDays(5));
               memCache.Set("houses", houseInfo, cacheEntryOptions);
               this.memCache.TryGetValue("houses", out cacheHouseInfo);
             }
