@@ -5,6 +5,8 @@
       public string id { get; set; }
       public string lastsoldprice { get; set; }
       public string lastsolddate { get; set; }
+      public string longitude { get; set; }
+      public string latitude { get; set; }
       public string lotSizeSqFt { get; set; }
       public string finishedSqFt { get; set; }
       public string bathrooms { get; set; }

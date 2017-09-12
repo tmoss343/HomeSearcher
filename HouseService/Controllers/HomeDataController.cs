@@ -148,6 +148,8 @@
                                 id = (string)c.Element("zpid"),
                                 lastsoldprice = (string)c.Element("lastSoldPrice"),
                                 lastsolddate = (string)c.Element("lastSoldDate"),
+                                longitude = (string)c.Element("address").Element("longitude"),
+                                latitude = (string)c.Element("address").Element("latitude"),
                                 finishedSqFt = (string)c.Element("finishedSqFt"),
                                 bathrooms = (string)c.Element("bathrooms"),
                                 bedrooms = (string)c.Element("bedrooms"),
