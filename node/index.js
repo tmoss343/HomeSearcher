@@ -48,7 +48,7 @@ function createLandBankDataSpreadSheet(auth) {
   var drive = google.drive('v3');
   var fields = ['acquisition_date', 'address', 'city', 'city_council_district', 'inventory_type', 'location_1_address', 'location_1_city', 'location_1_state', 'postal_code', 'market_value', 'market_value_year', 'neighborhood', 'off_stree_parking', 'property_class', 'property_condition', 'propert_status', 'school_district', 'square_footage', 'zoned_as'];
   // direct way
-  client.get("http://localhost:5000/houses/landbankhouses", function (json, response) {
+  client.get("http://"+process.env.HOUSESCOOPERAPI_SERVICE_HOST+":"+process.env.HOUSESCOOPERAPI_SERVICE_PORT+"/houses/landbankhouses", function (json, response) {
       // parsed response body as js object
       // console.log(data);
       // raw response
@@ -96,7 +96,7 @@ function createZillowDataSpreadSheet(auth) {
   var drive = google.drive('v3');
   var fields = ['id', 'lastsoldprice', 'lastsolddate', 'finishedSqFt', 'bathrooms', 'bedrooms', 'zestimate', 'lastUpdated', 'address', 'url'];
   // direct way
-  client.get("http://localhost:5000/houses/propertysearchresults", function (json, response) {
+  client.get("http://"+process.env.HOUSESCOOPERAPI_SERVICE_HOST+":"+process.env.HOUSESCOOPERAPI_SERVICE_PORT+"/houses/landbankhouses", function (json, response) {
       // parsed response body as js object
       // console.log(data);
       // raw response

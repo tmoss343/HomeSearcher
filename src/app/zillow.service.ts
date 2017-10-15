@@ -24,6 +24,8 @@ export class DeepComp {
 
 export class HomeDetails {
   id: string;
+  longitude: string;
+  latitude: string;
   lastSoldPrice: string;
   lastSoldDate: string;
   finishedSqFt: string;

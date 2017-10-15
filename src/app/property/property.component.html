@@ -1,9 +1,10 @@
 <div tabindex="0">
-    <!-- <div fxLayout="row" fxLayoutWrap>
-        <div *ngFor="let prop of propResponse">
+    <div fxLayout="row" fxLayoutWrap>
+        <div *ngFor="let prop of propResponse" color="primary">
             <a *ngIf="prop.neighborhood == id" href="{{prop.url}}">
                 <md-card class="card-size" tabindex="0">
                 <md-card-title>{{prop.address}}</md-card-title>
+                <img md-card-image src="https://maps.googleapis.com/maps/api/streetview?size=400x400&location={{prop.latitude}},{{prop.longitude}}&key=AIzaSyA0XDyWQorxP9FbP0kffVPrkq2T-KwzRuM" alt="Attempted Street View">
                 <md-card-content>
                     <md-list>
                     <md-list-item>id: {{prop.id}}</md-list-item>
@@ -14,8 +15,8 @@
                 </md-card>
             </a>
         </div>
-    </div> -->
-    
+    </div>
+   <!-- 
     <md-grid-list cols="4" rowHeight="100px">
         <div *ngFor="let prop of propResponse">
             <a *ngIf="prop.neighborhood == id" href="{{prop.url}}">
@@ -25,6 +26,6 @@
             </a>
         </div>
     </md-grid-list>
-      
+    -->  
 </div>
       

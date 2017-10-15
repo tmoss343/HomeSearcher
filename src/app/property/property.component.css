@@ -1,5 +1,6 @@
-md-grid-tile {
+md-card {
     background: lightblue;
+    border: 10px black;
 }
   
 a {
