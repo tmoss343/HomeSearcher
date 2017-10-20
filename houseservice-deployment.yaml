@@ -18,6 +18,28 @@ spec:
       - name: housescooperapi
         image: tbauers/housescooperapi
         ports:
+        - containerPort: 5000
+---
+apiVersion: apps/v1beta1 
+kind: Deployment
+metadata:
+  name: housedatapusherman
+  labels:
+    app: housedatapusherman
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: housedatapusherman
+  template:
+    metadata:
+      labels:
+        app: housedatapusherman
+    spec:
+      containers:
+      - name: housedatapusherman
+        image: tbauers/housedatapusherman
+        ports:
         - containerPort: 80
 ---
 kind: Service
